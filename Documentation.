@@ -1,0 +1,238 @@
+Documentation of free-source code entity framework eng prog language
+JS(JavaScript). 
+
+Description of Next.
+
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/basics-final"
+
+Then follow the instructions from the command output (cd into the directory and start the development server).
+
+You should also update the following files:
+
+public/images/profile.jpg with your photo (Recommended: 400px width/height).
+const name = '[Your Name]' in components/layout.js with your name.
+<p>[Your Self Introduction]</p> in pages/index.js with your self introduction.
+
+To push to GitHub, you can run the following commands (replace <username> with your GitHub username):
+
+git remote add origin https://github.com/<username>/nextjs-blog.git
+git push -u origin main
+
+Next.js can be deployed to any hosting provider that supports Node.js.
+
+If you’ve followed the instructions so far, your package.json should have the following build and start scripts:
+
+{
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
+In your own hosting provider, run the build script once, which builds the production application in the .next folder.
+
+npm run build
+After building, the start script starts a Node.js server that supports hybrid pages, serving both statically generated and server-side rendered pages, and API Routes.
+
+npm run start
+Tip: You can customize the start script in package.json to accept a PORT parameter by updating it as: "start": "next start -p $PORT".
+
+<html>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/jsx">
+      const app = document.getElementById("app")
+
+      function Header({ title }) {
+        return <h1>{title ? title : "Default title"}</h1>
+      }
+
+      function HomePage() {
+        const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"]
+
+        const [likes, setLikes] = React.useState(0)
+
+        function handleClick() {
+          setLikes(likes + 1)
+        }
+
+        return (
+          <div>
+            <Header title="Develop. Preview. Ship. 🚀" />
+            <ul>
+              {names.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+
+            <button onClick={handleClick}>Like ({likes})</button>
+          </div>
+        )
+      }
+
+      ReactDOM.render(<HomePage />, app)
+    </script>
+  </body>
+</html>
+
+To do so, create a new file called package.json with an empty object {}.
+
+// package.json
+{
+}
+In your terminal, run npm install react react-dom next. Once the installation is complete, you should be able to see your project dependencies listed inside your package.json file:
+
+// package.json
+{
+  "dependencies": {
+    "next": "^12.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
+You will also notice a new folder called node_modules that contains the actual files of our dependencies.
+
+Jumping back to the index.html file, you can delete the following code:
+
+The react and react-dom scripts since you’ve installed them with NPM.
+The <html> and <body> tags because Next.js will create these for you.
+The code that interacts with app element and ReactDom.render() method.
+The Babel script because Next.js has a compiler that transforms JSX into valid JavaScript browsers can understand.
+The <script type="text/jsx"> tag.
+The React. part of the React.useState(0) function
+After deleting the lines above, add import { useState } from "react" to the top of your file. Your code should look like this:
+
+// index.html
+import { useState } from 'react';
+function Header({ title }) {
+  return <h1>{title ? title : 'Default title'}</h1>;
+}
+
+function HomePage() {
+  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+
+  const [likes, setLikes] = useState(0);
+
+  function handleClick() {
+    setLikes(likes + 1);
+  }
+
+  return (
+    <div>
+      <Header title="Develop. Preview. Ship. 🚀" />
+      <ul>
+        {names.map((name) => (
+          <li key={name}>{name}</li>
+        ))}
+      </ul>
+
+      <button onClick={handleClick}>Like ({likes})</button>
+    </div>
+  );
+}
+The only code left in the HTML file is JSX, so you can change the file type from .html to .js or .jsx.
+
+Now, there are three more things you need to do to fully transition to a Next.js app:
+
+Move the index.js file to a new folder called pages (more on this later).
+Add default export to your main React component to help Next.js distinguish which component to render as the main component of this page.
+   // ...
+   export default function HomePage() {
+   //  ...
+
+Add a script to your package.json file to run the Next.js development server while you develop.
+   // package.json
+   {
+    "scripts": {
+        "dev": "next dev"
+    },
+     // "dependencies": {
+     //   "next": "^11.1.0",
+     //   "react": "^17.0.2",
+     //   "react-dom": "^17.0.2"
+     // }
+   }
+Running the development server
+To confirm everything works, you can view your app by running npm run dev inside your terminal and navigating to localhost:3000 in the browser. Then, make a small change to the code and save it.
+
+Once you save the file, you should notice the browser automatically updates to reflect the change.
+
+This feature is called Fast Refresh. It gives you instantaneous feedback on any edits you make and comes pre-configured with Next.js.
+
+To recap, your code went from this...
+
+<html>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/jsx">
+      const app = document.getElementById("app")
+
+      function Header({ title }) {
+        return <h1>{title ? title : "Default title"}</h1>
+      }
+
+      function HomePage() {
+        const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"]
+        const [likes, setLikes] = React.useState(0)
+
+        function handleClick() {
+          setLikes(likes + 1)
+        }
+
+        return (
+          <div>
+            <Header title="Develop. Preview. Ship. 🚀" />
+            <ul>
+              {names.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+
+            <button onClick={handleClick}>Like ({likes})</button>
+          </div>
+        )
+      }
+
+      ReactDOM.render(<HomePage />, app)
+    </script>
+  </body>
+</html>
+...to this:
+
+import { useState } from 'react';
+
+function Header({ title }) {
+  return <h1>{title ? title : 'Default title'}</h1>;
+}
+
+export default function HomePage() {
+  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const [likes, setLikes] = useState(0);
+
+  function handleClick() {
+    setLikes(likes + 1);
+  }
+
+  return (
+    <div>
+      <Header title="Develop. Preview. Ship. 🚀" />
+      <ul>
+        {names.map((name) => (
+          <li key={name}>{name}</li>
+        ))}
+      </ul>
+
+      <button onClick={handleClick}>Like ({likes})</button>
+    </div>
+  );
+}
